@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flux.Core", "Flux.Core\Flux.Core.csproj", "{FF2B9094-3ACF-46E7-9A55-99DFAA7BB4B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flux.Service", "Flux.Service\Flux.Service.csproj", "{80F77B79-881A-427D-A00E-CCAC7FA174E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flux.Common", "Flux.Common\Flux.Common.csproj", "{F06988DB-3021-43EB-8DB2-DB7B34955071}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FF2B9094-3ACF-46E7-9A55-99DFAA7BB4B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF2B9094-3ACF-46E7-9A55-99DFAA7BB4B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF2B9094-3ACF-46E7-9A55-99DFAA7BB4B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF2B9094-3ACF-46E7-9A55-99DFAA7BB4B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80F77B79-881A-427D-A00E-CCAC7FA174E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80F77B79-881A-427D-A00E-CCAC7FA174E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80F77B79-881A-427D-A00E-CCAC7FA174E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80F77B79-881A-427D-A00E-CCAC7FA174E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F06988DB-3021-43EB-8DB2-DB7B34955071}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F06988DB-3021-43EB-8DB2-DB7B34955071}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F06988DB-3021-43EB-8DB2-DB7B34955071}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F06988DB-3021-43EB-8DB2-DB7B34955071}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
