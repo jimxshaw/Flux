@@ -1,10 +1,10 @@
 namespace Flux.Service;
 
-public class Worker : BackgroundService
+public class Processor : BackgroundService
 {
-    private readonly ILogger<Worker> _logger;
+    private readonly ILogger<Processor> _logger;
 
-    public Worker(ILogger<Worker> logger)
+    public Processor(ILogger<Processor> logger)
     {
         _logger = logger;
     }
