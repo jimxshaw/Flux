@@ -3,10 +3,12 @@ namespace Flux.Service;
 public class Processor : BackgroundService
 {
     private readonly ILogger<Processor> _logger;
+    private readonly IConfiguration _config;
 
-    public Processor(ILogger<Processor> logger)
+    public Processor(ILogger<Processor> logger, IConfiguration config)
     {
         _logger = logger;
+        _config = config;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -15,7 +17,8 @@ public class Processor : BackgroundService
         {
             if (_logger.IsEnabled(LogLevel.Information))
             {
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                var port = _config.GetValue<int>("Flux:Sources:0:Port");
+                _logger.LogInformation("Listening on UDP port {port}", port);
             }
             await Task.Delay(1000, stoppingToken);
         }
