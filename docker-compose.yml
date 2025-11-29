@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  flux-service:
+    build:
+      context: . # Root of repository where the .sln solution file and projects live.
+      dockerfile: Flux.Service/DOCKERFILE
+    ports:
+      - "5140:5140/udp" # Expose UDP port for log ingestion.
+    volumes:
+      - ./Flux.Service/logs:/app/logs # Persist output.csv.
+      - ./Flux.Service/appsettings.yaml:/app/appsettings.yaml:ro # Mount config into container as read-only.
+    environment:
+      - DOTNET_ENVIRONMENT=Production
