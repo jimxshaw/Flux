@@ -1,6 +1,7 @@
 using Flux.Common.Options;
 using Flux.Common.Interfaces;
 using Flux.Core.Sources;
+using Flux.Core.Sinks;
 
 using Microsoft.Extensions.Options;
 
@@ -21,20 +22,24 @@ public class Processor : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         var sourceConfig = _fluxOptions.Value.Sources.FirstOrDefault();
-        if (sourceConfig is null)
+        var sinkConfig = _fluxOptions.Value.Sinks.FirstOrDefault();
+
+        if (sourceConfig is null || sinkConfig is null)
         {
-            _logger.LogError("No source configuration found.");
+            _logger.LogError("Missing source or sink config.");
             return;
         }
 
+        // Set up source and sink.
         ILogSource source = new UdpLogSource(sourceConfig.Type, sourceConfig.Port);
+        ILogSink sink = new CsvFileSink(sinkConfig.Path);
 
+        // Start listening.
         await source.StartAsync(
             async (logEvent) =>
             {
                 _logger.LogInformation("[SOURCE] Received: {msg}", logEvent.RawMessage);
-                // Later: pass to processor chain → sink
-                await Task.CompletedTask;
+                await sink.WriteAsync(logEvent, stoppingToken);
             },
             stoppingToken
         );
