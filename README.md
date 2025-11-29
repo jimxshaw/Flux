@@ -18,3 +18,15 @@ These abstractions ensure clean separation between:
 
 Flux.Common is consumed by Flux.Core, the actual implementations, and Flux.Service, the runtime wiring.
 
+#### Flux.Core
+This project implements the core functionality of the Flux middleware.
+
+It contains the following implementation modules:
+- Models: Concrete data structures.
+- Sources: Receives logs.
+- Processors: Transforms/enriches logs.
+- Sinks: Outputs processed logs.
+
+These implementations are used by Flux.Service to compose the runtime pipeline.
+
+
