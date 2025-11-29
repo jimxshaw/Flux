@@ -1,0 +1,31 @@
+# Build Stage
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Copy all project files first (so restore layer can be cached).
+COPY Flux.sln ./
+COPY Flux.Common/Flux.Common.csproj Flux.Common/
+COPY Flux.Core/Flux.Core.csproj Flux.Core/
+COPY Flux.Service/Flux.Service.csproj Flux.Service/
+
+# Restore using the solution file.
+RUN dotnet restore Flux.sln
+
+# Copy the entire source tree.
+COPY . .
+
+# Build & publish Flux.Service.
+RUN dotnet publish Flux.Service/Flux.Service.csproj -c Release -o /app/publish
+
+
+# Runtime Stage
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+WORKDIR /app
+
+# Copy published output.
+COPY --from=build /app/publish .
+
+# Expose UDP port.
+EXPOSE 5140/udp
+
+ENTRYPOINT ["dotnet", "Flux.Service.dll"]
