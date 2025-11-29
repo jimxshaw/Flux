@@ -14,5 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Flux.Common\Flux.Common.csproj" />
+    <ProjectReference Include="..\Flux.Core\Flux.Core.csproj" />
   </ItemGroup>
 </Project>
