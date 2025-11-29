@@ -1,6 +1,7 @@
 version: "3.8"
 
 services:
+  # Main container that listen to incoming logs and processes them.
   flux-service:
     build:
       context: . # Root of repository where the .sln solution file and projects live.
@@ -12,6 +13,8 @@ services:
       - ./Flux.Service/appsettings.yaml:/app/appsettings.yaml:ro # Mount config into container as read-only.
     environment:
       - DOTNET_ENVIRONMENT=Production
+
+  # Sibling container that periodically forwards fake logs to the main container to process.
   flux-forwarder:
     build:
       context: .
