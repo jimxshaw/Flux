@@ -23,7 +23,7 @@ public class CsvFileSink : ILogSink
     // Write header if file doesn't exist.
     if (!File.Exists(_filePath))
     {
-      File.AppendAllText(_filePath, "Timestamp,SourceName,Severity,RawMessage\n");
+      File.AppendAllText(_filePath, $"\"Timestamp\",\"SourceName\",\"Severity\",\"RawMessage\"{Environment.NewLine}");
     }
   }
 
@@ -31,15 +31,9 @@ public class CsvFileSink : ILogSink
 
   public Task WriteAsync(ILogEvent logEvent, CancellationToken cancellationToken)
   {
-    var line = string.Format(
-        CultureInfo.InvariantCulture,
-        "\"{0:O}\",\"{1}\",\"{2}\",\"{3}\"{4}",
-        logEvent.Timestamp,
-        Escape(logEvent.SourceName),
-        logEvent.Severity,
-        Escape(logEvent.RawMessage),
-        Environment.NewLine
-    );
+    var cleanedMessage = logEvent.RawMessage.TrimEnd('\r', '\n');
+
+    var line = $"\"{logEvent.Timestamp}\",\"{logEvent.SourceName}\",\"{logEvent.Severity}\",\"{cleanedMessage}\"{Environment.NewLine}";
 
     lock (_lock)
     {
@@ -47,10 +41,5 @@ public class CsvFileSink : ILogSink
     }
 
     return Task.CompletedTask;
-  }
-
-  private static string Escape(string input)
-  {
-    return input.Replace("\"", "\"\""); // Escape quotes for CSV.
   }
 }
