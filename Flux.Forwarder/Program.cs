@@ -11,7 +11,16 @@ Console.WriteLine($"[Forwarder] Sending logs to {targetHost}:{targetPort} every 
 
 while (true)
 {
-  var message = $"Fake log from Forwarder at {DateTime.UtcNow:O}";
+  // Get the current UTC time.
+  var utcNow = DateTime.UtcNow;
+
+  // Get the time zone info for US Central Time.
+  TimeZoneInfo centralTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
+
+  // Convert UTC time to US Central Time.
+  var usCentralTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, centralTimeZone);
+
+  var message = $"Fake log from Forwarder at US Central Time {usCentralTime}";
   var bytes = Encoding.UTF8.GetBytes(message);
 
   try
