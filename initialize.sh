@@ -7,5 +7,5 @@ docker compose down -v
 echo "Rebuilding containers without cache..."
 docker compose build --no-cache
 
-echo "Starting containers in detached mode..."
-docker compose up -d
+echo "Starting containers..."
+docker compose up
