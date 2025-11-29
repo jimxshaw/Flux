@@ -29,4 +29,11 @@ It contains the following implementation modules:
 
 These implementations are used by Flux.Service to compose the runtime pipeline.
 
+#### Flux.Service
+This is the entry point and coordination layer of the Flux middleware system.
 
+It acts as the central server in a client-server model, listening for incoming log events,
+
+processing them through a transformation pipeline, and forwarding them to output sinks.
+
+It uses .NET 8's BackgroundService model to run continuously in a Docker container, configurable via external appsettings.yml.

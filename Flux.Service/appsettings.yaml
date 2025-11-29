@@ -1,3 +1,14 @@
+# Flux Service Configuration
+# This YAML file contains configuration for the log processing pipeline.
+# It replaces the traditional appsettings.json to improve human readability.
+#
+# The file defines:
+# - Logging levels
+# - Log Sources
+# - Log Processors
+# - Log Sinks
+#
+# The structure matches the FluxOptions class and is deserialized at runtime.
 Logging:
   LogLevel:
     Default: Information
