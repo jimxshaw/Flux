@@ -12,3 +12,9 @@ services:
       - ./Flux.Service/appsettings.yaml:/app/appsettings.yaml:ro # Mount config into container as read-only.
     environment:
       - DOTNET_ENVIRONMENT=Production
+  flux-forwarder:
+    build:
+      context: .
+      dockerfile: Flux.Forwarder/DOCKERFILE
+    depends_on:
+      - flux-service
