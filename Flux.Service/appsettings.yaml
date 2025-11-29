@@ -2,3 +2,11 @@ Logging:
   LogLevel:
     Default: Information
     Microsoft: Warning
+
+Flux:
+  Sources:
+    - Type: "Udp"
+      Port: 5140
+  Sinks:
+    - Type: File
+      Path: logs/output.csv
