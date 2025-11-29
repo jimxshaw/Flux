@@ -1,5 +1,7 @@
 namespace Flux.Common.Options;
 
+// Represents configuration settings loaded from appsettings.yaml.
+// Includes lists of log sources and sinks to be initialized at runtime.
 public class FluxOptions
 {
   public List<SourceOptions> Sources { get; set; } = new();
