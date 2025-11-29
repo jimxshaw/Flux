@@ -7,6 +7,8 @@ Flux:
   Sources:
     - Type: "Udp"
       Port: 5140
+  Processors:
+    - Name: "Enrichment"
   Sinks:
     - Type: File
       Path: logs/output.csv

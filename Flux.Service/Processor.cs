@@ -4,6 +4,7 @@ using Flux.Core.Sources;
 using Flux.Core.Sinks;
 
 using Microsoft.Extensions.Options;
+using Flux.Core.Processors;
 
 namespace Flux.Service;
 
@@ -22,24 +23,30 @@ public class Processor : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         var sourceConfig = _fluxOptions.Value.Sources.FirstOrDefault();
+        var processorConfig = _fluxOptions.Value.Processors.FirstOrDefault();
         var sinkConfig = _fluxOptions.Value.Sinks.FirstOrDefault();
 
-        if (sourceConfig is null || sinkConfig is null)
+        if (sourceConfig is null || processorConfig is null || sinkConfig is null)
         {
-            _logger.LogError("Missing source or sink config.");
+            _logger.LogError("Missing source, processor or sink config.");
             return;
         }
 
-        // Set up source and sink.
+        // Set up source, processor and sink.
         ILogSource source = new UdpLogSource(sourceConfig.Type, sourceConfig.Port);
+        ILogProcessor processor = new EnrichmentProcessor();
         ILogSink sink = new CsvFileSink(sinkConfig.Path);
 
         // Start listening.
         await source.StartAsync(
             async (logEvent) =>
             {
-                _logger.LogInformation("[SOURCE] Received: {msg}", logEvent.RawMessage);
-                await sink.WriteAsync(logEvent, stoppingToken);
+                var enriched = await processor.ProcessAsync(logEvent, stoppingToken);
+
+                if (enriched != null)
+                {
+                    await sink.WriteAsync(logEvent, stoppingToken);
+                }
             },
             stoppingToken
         );
