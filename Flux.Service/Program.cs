@@ -1,3 +1,4 @@
+using Flux.Common.Options;
 using Flux.Service;
 using NetEscapades.Configuration.Yaml;
 
@@ -7,6 +8,8 @@ builder.Configuration.Sources.Clear();
 builder.Configuration
         .AddYamlFile("appsettings.yaml", optional: false, reloadOnChange: true)
         .AddEnvironmentVariables();
+
+builder.Services.Configure<FluxOptions>(builder.Configuration.GetSection("Flux"));
 
 // Register processor worker.
 builder.Services.AddHostedService<Processor>();
