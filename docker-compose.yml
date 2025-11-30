@@ -1,5 +1,9 @@
 version: "3.8"
 
+# This file defines the multi-container setup for the Flux log pipeline.
+# It is used to simulate a real-world environment where:
+#   - Flux.Service acts as the log collection and processing server.
+#   - Flux.Forwarder acts as a client that generates log events via UDP.
 services:
   # Main container that listen to incoming logs and processes them.
   flux-service:

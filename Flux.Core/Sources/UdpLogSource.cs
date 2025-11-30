@@ -6,6 +6,10 @@ using Flux.Core.Models;
 
 namespace Flux.Core.Sources;
 
+// A simple UDP log source that listens on a given port for incoming datagrams.
+// It parses each UDP packet as a plaintext log message and emits it into the pipeline.
+// This source simulates real-world systems like rsyslog, where logs are shipped
+// via UDP without guaranteed delivery.
 public class UdpLogSource : ILogSource
 {
   private readonly string _name;
@@ -22,16 +26,23 @@ public class UdpLogSource : ILogSource
 
   public async Task StartAsync(Func<ILogEvent, Task> emitCallback, CancellationToken cancellationToken)
   {
+    // Initialize a new UDP client.
     _udpClient = new UdpClient(_port);
     Console.WriteLine($"[UDP Source] Listening on port {_port}...");
 
+    // Keep listening for incoming UDP datagrams at the set port
+    // until a cancel token is provided.
     while (!cancellationToken.IsCancellationRequested)
     {
       try
       {
+        // Get the whole UDP datagram.
         var result = await _udpClient.ReceiveAsync(cancellationToken);
+
+        // Get the actual message.
         var message = Encoding.UTF8.GetString(result.Buffer);
 
+        // Map the message to our internal log event class.
         var logEvent = new LogEvent
         {
           SourceName = _name,
@@ -40,11 +51,12 @@ public class UdpLogSource : ILogSource
           Severity = LogSeverity.Info
         };
 
+        // Forward the log event object to the next receiver.
         await emitCallback(logEvent);
       }
       catch (OperationCanceledException)
       {
-        // Expected during shutdown
+        // Expected during shutdown.
       }
       catch (Exception ex)
       {
@@ -52,6 +64,7 @@ public class UdpLogSource : ILogSource
       }
     }
 
+    // Close the UDP client when finished.
     _udpClient.Close();
   }
 }

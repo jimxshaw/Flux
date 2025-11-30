@@ -8,6 +8,9 @@ using Flux.Core.Processors;
 
 namespace Flux.Service;
 
+// Core Execution Loop for Flux Service
+// This class implements the core log pipeline: Source -> Processor -> Sink.
+// It runs inside a background thread using .NET’s BackgroundService.
 public class Processor : BackgroundService
 {
     private readonly ILogger<Processor> _logger;
@@ -22,6 +25,7 @@ public class Processor : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        // Load and initialize all configured sources, processors and sinks.
         var sourceConfig = _fluxOptions.Value.Sources.FirstOrDefault();
         var processorConfig = _fluxOptions.Value.Processors.FirstOrDefault();
         var sinkConfig = _fluxOptions.Value.Sinks.FirstOrDefault();
@@ -34,7 +38,9 @@ public class Processor : BackgroundService
 
         // Set up source, processor and sink.
         ILogSource source = new UdpLogSource(sourceConfig.Type, sourceConfig.Port);
+        // Apply transformations (e.g., enrichment) to each event.
         ILogProcessor processor = new EnrichmentProcessor();
+        // Output the final logs to one or more sink targets.
         ILogSink sink = new CsvFileSink(sinkConfig.Path);
 
         // Start listening.
